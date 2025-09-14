@@ -13,6 +13,7 @@ Before setting up the configuration, make sure you have:
 - Git
 - [WezTerm](https://wezfurlong.org/wezterm/)
 - [Fish shell](https://fishshell.com/)
+- [NVM](https://github.com/nvm-sh/nvm)
 - [Bass](https://github.com/edc/bass) is a small utility that lets Fish shell execute **Bash-style scripts** that modify the environment (like `nvm` or `pyenv`). It captures environment variable changes from Bash and applies them in Fish.
 - (Optional) Homebrew on MacOS or Scoop/Chocolatey on Windows
 
@@ -111,63 +112,31 @@ cp config.fish ~/.config/fish/
 
 You can add:
 
-* Starship prompt
 * Custom functions and scripts in `~/.config/fish/functions/`
 * Additional WezTerm keybindings or colorschemes
 
 ---
 
-### 6. Installing the Tide Prompt for Fish
-
-[Tide](https://github.com/IlanCosman/tide) is a fast and minimal Fish shell prompt with Git integration and nice styling. Here's how to install it:
-
-1. **Install dependencies** (Node.js and Fisher):
-
-```bash
-# Install Node.js (required for Tide)
-# On Linux / MacOS
-brew install node        # MacOS
-sudo apt install nodejs npm  # Ubuntu/Debian
-
-# Install Fisher (Fish plugin manager)
-curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
-```
-
-2. **Install Tide**:
-
-```bash
-fisher install IlanCosman/tide
-```
-
-3. **Configure Tide**:
-
-3a. - Option 1 - Single command to setup tide with my perferences:
-```bash
-tide configure --auto --style=Rainbow --prompt_colors='16 colors' --show_time='12-hour format' --rainbow_prompt_separators=Angled --powerline_prompt_heads=Sharp --powerline_prompt_tails=Flat --powerline_prompt_style='One line' --prompt_spacing=Compact --icons='Few icons' --transient=Yes
-```
-
-3b. - Option 2 - Run the setup wizard:
-
-```bash
-tide configure
-```
-
-Follow the prompts to select your preferred prompt style, Git integration, colors, and prompt features.
-
-4. **Apply changes**:
-
-Restart Fish or source your config:
-
-```bash
-source ~/.config/fish/config.fish
-```
-
-Your Fish shell should now show the Tide prompt with your selected configuration.
-
----
-
-### 7. Install Bass
+### 6. Install Bass
 
 ```bash
 fisher install edc/bass
 ```
+
+---
+
+### 7. Install Starship
+
+[Starship](https://starship.rs/) is a minimal, blazing-fast, and infinitely customizable prompt for any shell!
+
+1. **Install Starship**
+
+```bash
+curl -sS https://starship.rs/install.sh | sh
+```
+
+2. **Configure Starship**
+
+To configure starship you need to create a `starship.toml` file in `~/.config/`.
+
+You can find more information about personalizing starship at the [official docs](httpshttps://starship.rs/config/)

@@ -25,6 +25,11 @@ FISH_SRC="$DOTFILES_DIR/fish/config.fish"
 FISH_DEST="$WSL_HOME/.config/fish/config.fish"
 link_file "$FISH_SRC" "$FISH_DEST"
 
+# Starship config
+STARSHIP_SRC="$DOTFILES_DIR/starship.toml"
+STARSHIP_DEST="$WSL_HOME/.config/starship.toml"
+link_file "$STARSHIP_SRC" "$STARSHIP_DEST"
+
 # Fish functions
 if [ -d "$DOTFILES_DIR/fish/functions" ]; then
     for func_file in "$DOTFILES_DIR/fish/functions/"*.fish; do
