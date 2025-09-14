@@ -13,6 +13,7 @@ Before setting up the configuration, make sure you have:
 - Git
 - [WezTerm](https://wezfurlong.org/wezterm/)
 - [Fish shell](https://fishshell.com/)
+- [Bass](https://github.com/edc/bass) is a small utility that lets Fish shell execute **Bash-style scripts** that modify the environment (like `nvm` or `pyenv`). It captures environment variable changes from Bash and applies them in Fish.
 - (Optional) Homebrew on MacOS or Scoop/Chocolatey on Windows
 
 ---
@@ -162,3 +163,11 @@ source ~/.config/fish/config.fish
 ```
 
 Your Fish shell should now show the Tide prompt with your selected configuration.
+
+---
+
+### 7. Install Bass
+
+```bash
+fisher install edc/bass
+```
