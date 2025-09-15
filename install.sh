@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 set -e
 
+# --- Configuration ---
 DOTFILES_DIR="$HOME/dotfiles"
 WSL_HOME="$HOME"
 
-# Get Windows username from WSL
-WIN_USER=$(cmd.exe /C "echo %USERNAME%" | tr -d '\r')
-WINDOWS_HOME="/mnt/c/Users/$WIN_USER"
+# --- Helper Functions ---
 
-usage() {
-    echo "Usage: $0 [ --full-install | --setup-dotfiles | --help ]"
-    echo ""
-    echo "  --full-install      Install fish, starship, and setup dotfiles."
-    echo "  --setup-dotfiles    Only setup the dotfiles."
-    echo "  --help              Display this help message."
+detect_os() {
+    if [[ "$(uname)" == "Linux" ]]; then
+        if grep -q Microsoft /proc/version; then
+            echo "WSL"
+        else
+            echo "Linux"
+        fi
+    elif [[ "$(uname)" == "Darwin" ]]; then
+        echo "macOS"
+    else
+        echo "Unknown"
+    fi
 }
 
 link_file() {
@@ -28,12 +33,26 @@ link_file() {
     ln -s "$src" "$dest"
 }
 
+# --- Installation Functions ---
 install_fish() {
     if command -v fish &> /dev/null; then
         echo "fish is already installed."
     else
         echo "Installing fish..."
-        # Add fish installation commands here
+        case "$(detect_os)" in
+            "Linux")
+                sudo apt-add-repository ppa:fish-shell/release-3
+                sudo apt-get update
+                sudo apt-get install -y fish
+                ;; 
+            "macOS")
+                brew install fish
+                ;; 
+            *)
+                echo "Unsupported OS for fish installation."
+                exit 1
+                ;; 
+        esac
     fi
     # Set fish as the default shell
     if [ -f /etc/shells ] && ! grep -q "$(which fish)" /etc/shells; then
@@ -53,6 +72,37 @@ install_starship() {
     fi
 }
 
+install_fastfetch() {
+    if command -v fastfetch &> /dev/null; then
+        echo "fastfetch is already installed."
+    else
+        echo "Installing fastfetch..."
+        case "$(detect_os)" in
+            "Linux")
+                sudo add-apt-repository ppa:fastfetch-cli/fastfetch
+                sudo apt update
+                sudo apt install -y fastfetch
+                ;; 
+            "macOS")
+                brew install fastfetch
+                ;; 
+            *)
+                echo "Unsupported OS for fastfetch installation."
+                exit 1
+                ;; 
+        esac
+    fi
+}
+
+install_nvm() {
+    if [ -d "$HOME/.nvm" ]; then
+        echo "nvm is already installed."
+    else
+        echo "Installing nvm..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    fi
+}
+
 install_fisher_and_plugins() {
     echo "Installing fisher and plugins..."
     if ! fish -c "type fisher" &> /dev/null; then
@@ -65,6 +115,7 @@ install_fisher_and_plugins() {
     fish -c "fisher install jorgebucaran/nvm.fish"
 }
 
+# --- Setup Function ---
 setup_dotfiles() {
     # Fish config
     FISH_SRC="$DOTFILES_DIR/fish/config.fish"
@@ -85,13 +136,30 @@ setup_dotfiles() {
     fi
 
     # WezTerm config
-    WEZTERM_SRC="$DOTFILES_DIR/wezterm/wezterm.lua"
-    WEZTERM_DEST="$WINDOWS_HOME/.wezterm.lua"
-    cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
+    if [[ "$(detect_os)" == "WSL" ]]; then
+        WIN_USER=$(cmd.exe /C "echo %USERNAME%" | tr -d '\r')
+        WINDOWS_HOME="/mnt/c/Users/$WIN_USER"
+        WEZTERM_DEST="$WINDOWS_HOME/.wezterm.lua"
+        cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
+        echo "WezTerm config installed to $WEZTERM_DEST"
+    else
+        WEZTERM_DEST="$HOME/.config/wezterm/wezterm.lua"
+        mkdir -p "$(dirname "$WEZTERM_DEST")"
+        cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
+        echo "WezTerm config installed to $WEZTERM_DEST"
+    fi
 
     echo "Dotfiles setup complete!"
     echo "Fish config installed to $FISH_DEST"
-    echo "WezTerm config installed to $WEZTERM_DEST"
+}
+
+# --- Main Logic ---
+usage() {
+    echo "Usage: $0 [ --full-install | --setup-dotfiles | --help ]"
+    echo
+    echo "  --full-install      Install all tools and setup dotfiles."
+    echo "  --setup-dotfiles    Only setup the dotfiles."
+    echo "  --help              Display this help message."
 }
 
 if [ "$#" -eq 0 ]; then
@@ -104,22 +172,24 @@ while [[ "$#" -gt 0 ]]; do
         --full-install)
             install_fish
             install_starship
+            install_fastfetch
+            install_nvm
             install_fisher_and_plugins
             setup_dotfiles
             shift
-            ;;
+            ;; 
         --setup-dotfiles)
             setup_dotfiles
             shift
-            ;;
+            ;; 
         --help)
             usage
             shift
-            ;;
+            ;; 
         *)
             echo "Unknown parameter passed: $1"
             usage
             exit 1
-            ;;
+            ;; 
     esac
 done
