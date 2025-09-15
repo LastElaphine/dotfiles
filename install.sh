@@ -149,8 +149,9 @@ install_fastfetch() {
                 echo "After downloading, you can install the .deb package using: sudo dpkg -i <downloaded_file.deb>"
                 ;;
             "AmazonLinux")
-                echo "Installing fastfetch for Amazon Linux..."
-                sudo yum install -y fastfetch
+                echo "Installing fastfetch from GitHub releases..."
+                FASTFETCH_URL="https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.tar.gz"
+                curl -L "$FASTFETCH_URL" | sudo tar -xzC /usr/local/bin --strip-components=1 fastfetch-linux-amd64/usr/bin/fastfetch
                 ;;
             "macOS")
                 install_brew_package "fastfetch"
