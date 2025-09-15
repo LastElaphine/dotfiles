@@ -33,6 +33,16 @@ link_file() {
     ln -s "$src" "$dest"
 }
 
+install_brew_package() {
+    local package_name=$1
+    if ! command -v brew &> /dev/null; then
+        echo "Homebrew not found. Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    echo "Installing $package_name via Homebrew..."
+    brew install "$package_name"
+}
+
 # --- Installation Functions ---
 install_fish() {
     if command -v fish &> /dev/null; then
@@ -89,12 +99,7 @@ install_fastfetch() {
                 echo "After downloading, you can install the .deb package using: sudo dpkg -i <downloaded_file.deb>"
                 ;;
             "macOS")
-                echo "For macOS, it's recommended to install fastfetch via Homebrew."
-                if ! command -v brew &> /dev/null; then
-                    echo "Homebrew not found. Installing Homebrew..."
-                    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                fi
-                brew install fastfetch
+                install_brew_package "fastfetch"
                 ;;
             *)
                 echo "Unsupported OS for fastfetch installation. Please refer to the fastfetch GitHub page for manual installation instructions:"
@@ -127,6 +132,38 @@ install_fisher_and_plugins() {
     echo "Installing nvm.fish..."
     # Temporarily disable config.fish sourcing for this fish command
     FISH_CONFIG=/dev/null fish -c "fisher install jorgebucaran/nvm.fish"
+}
+
+install_wezterm() {
+    if command -v wezterm &> /dev/null; then
+        echo "Wezterm is already installed."
+    else
+        echo "Installing Wezterm..."
+        local OS_TYPE=$(detect_os)
+
+        case "$OS_TYPE" in
+            "Linux")
+                echo "Installing Wezterm for Linux (Ubuntu/Debian)..."
+                curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm.gpg
+                echo 'deb [signed-by=/usr/share/keyrings/wezterm.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+                sudo apt update
+                sudo apt install -y wezterm
+                ;;
+            "WSL")
+                echo "Wezterm needs to be installed manually on the Windows side for full functionality."
+                echo "Please visit https://wezterm.org/install/windows.html for instructions."
+                ;;
+            "macOS")
+                echo "Installing Wezterm for macOS via Homebrew..."
+                install_brew_package "--cask wezterm"
+                ;;
+            *)
+                echo "Unsupported OS for Wezterm installation. Please refer to the Wezterm GitHub page for manual installation instructions:"
+                echo "https://wezterm.org/install/"
+                exit 1
+                ;;
+        esac
+    fi
 }
 
 # --- Setup Function ---
@@ -189,6 +226,7 @@ while [[ "$#" -gt 0 ]]; do
             install_fastfetch
             install_nvm
             install_fisher_and_plugins
+            install_wezterm
             setup_dotfiles
             shift
             ;; 
