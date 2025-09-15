@@ -8,6 +8,14 @@ WSL_HOME="$HOME"
 WIN_USER=$(cmd.exe /C "echo %USERNAME%" | tr -d '\r')
 WINDOWS_HOME="/mnt/c/Users/$WIN_USER"
 
+usage() {
+    echo "Usage: $0 [ --full-install | --setup-dotfiles | --help ]"
+    echo ""
+    echo "  --full-install      Install fish, starship, and setup dotfiles."
+    echo "  --setup-dotfiles    Only setup the dotfiles."
+    echo "  --help              Display this help message."
+}
+
 link_file() {
     local src=$1
     local dest=$2
@@ -20,29 +28,98 @@ link_file() {
     ln -s "$src" "$dest"
 }
 
-# Fish config
-FISH_SRC="$DOTFILES_DIR/fish/config.fish"
-FISH_DEST="$WSL_HOME/.config/fish/config.fish"
-link_file "$FISH_SRC" "$FISH_DEST"
+install_fish() {
+    if command -v fish &> /dev/null; then
+        echo "fish is already installed."
+    else
+        echo "Installing fish..."
+        # Add fish installation commands here
+    fi
+    # Set fish as the default shell
+    if [ -f /etc/shells ] && ! grep -q "$(which fish)" /etc/shells; then
+        echo "Adding fish to /etc/shells"
+        which fish | sudo tee -a /etc/shells
+    fi
+    echo "Setting fish as the default shell"
+    chsh -s "$(which fish)"
+}
 
-# Starship config
-STARSHIP_SRC="$DOTFILES_DIR/starship.toml"
-STARSHIP_DEST="$WSL_HOME/.config/starship.toml"
-link_file "$STARSHIP_SRC" "$STARSHIP_DEST"
+install_starship() {
+    if command -v starship &> /dev/null; then
+        echo "Starship is already installed."
+    else
+        echo "Installing Starship..."
+        curl -sS https://starship.rs/install.sh | sh -s -- -y
+    fi
+}
 
-# Fish functions
-if [ -d "$DOTFILES_DIR/fish/functions" ]; then
-    for func_file in "$DOTFILES_DIR/fish/functions/"*.fish; do
-        func_name=$(basename "$func_file")
-        link_file "$func_file" "$WSL_HOME/.config/fish/functions/$func_name"
-    done
+install_fisher_and_plugins() {
+    echo "Installing fisher and plugins..."
+    if ! fish -c "type fisher" &> /dev/null; then
+        echo "Installing fisher..."
+        fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+    else
+        echo "fisher is already installed."
+    fi
+    echo "Installing nvm.fish..."
+    fish -c "fisher install jorgebucaran/nvm.fish"
+}
+
+setup_dotfiles() {
+    # Fish config
+    FISH_SRC="$DOTFILES_DIR/fish/config.fish"
+    FISH_DEST="$WSL_HOME/.config/fish/config.fish"
+    link_file "$FISH_SRC" "$FISH_DEST"
+
+    # Starship config
+    STARSHIP_SRC="$DOTFILES_DIR/starship.toml"
+    STARSHIP_DEST="$WSL_HOME/.config/starship.toml"
+    link_file "$STARSHIP_SRC" "$STARSHIP_DEST"
+
+    # Fish functions
+    if [ -d "$DOTFILES_DIR/fish/functions" ]; then
+        for func_file in "$DOTFILES_DIR/fish/functions/"*.fish; do
+            func_name=$(basename "$func_file")
+            link_file "$func_file" "$WSL_HOME/.config/fish/functions/$func_name"
+        done
+    fi
+
+    # WezTerm config
+    WEZTERM_SRC="$DOTFILES_DIR/wezterm/wezterm.lua"
+    WEZTERM_DEST="$WINDOWS_HOME/.wezterm.lua"
+    cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
+
+    echo "Dotfiles setup complete!"
+    echo "Fish config installed to $FISH_DEST"
+    echo "WezTerm config installed to $WEZTERM_DEST"
+}
+
+if [ "$#" -eq 0 ]; then
+    usage
+    exit 1
 fi
 
-# WezTerm config
-WEZTERM_SRC="$DOTFILES_DIR/wezterm/wezterm.lua"
-WEZTERM_DEST="$WINDOWS_HOME/.wezterm.lua"
-cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
-
-echo "Installation complete!"
-echo "Fish config installed to $FISH_DEST"
-echo "WezTerm config installed to $WEZTERM_DEST"
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --full-install)
+            install_fish
+            install_starship
+            install_fisher_and_plugins
+            setup_dotfiles
+            shift
+            ;;
+        --setup-dotfiles)
+            setup_dotfiles
+            shift
+            ;;
+        --help)
+            usage
+            shift
+            ;;
+        *)
+            echo "Unknown parameter passed: $1"
+            usage
+            exit 1
+            ;;
+    esac
+done

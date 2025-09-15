@@ -1,193 +1,78 @@
 # Dotfiles
 
-This repository contains my personal configuration files for **WezTerm** and **Fish shell**, designed to work on Linux, MacOS, and Windows (via WSL).  
+This repository contains my personal configuration files for a modern terminal environment, designed to work on Linux, MacOS, and Windows (via WSL). It aims to provide a consistent and visually appealing terminal experience across all platforms.
 
-It aims to provide a consistent terminal environment across all platforms.
+## Features
 
----
+This setup includes:
+
+-   **[WezTerm](https://wezfurlong.org/wezterm/):** A GPU-accelerated cross-platform terminal emulator and multiplexer.
+-   **[Fish Shell](https://fishshell.com/):** A smart and user-friendly command-line shell.
+-   **[Starship](https://starship.rs/):** A minimal, blazing-fast, and infinitely customizable prompt for any shell.
+-   **[fastfetch](https://github.com/fastfetch-cli/fastfetch):** A neofetch-like tool for fetching system information and displaying them in a pretty way.
+-   **[nvm.fish](https://github.com/jorgebucaran/nvm.fish):** A fish-friendly version of the Node Version Manager.
+-   **[Fisher](https://github.com/jorgebucaran/fisher):** A plugin manager for the fish shell.
 
 ## Prerequisites
 
-Before setting up the configuration, make sure you have:
+Before you begin, ensure you have the following installed:
 
-- Git
-- [WezTerm](https://wezfurlong.org/wezterm/)
-- [Fish shell](https://fishshell.com/)
-- [NVM](https://github.com/nvm-sh/nvm)
-- [Bass](https://github.com/edc/bass) is a small utility that lets Fish shell execute **Bash-style scripts** that modify the environment (like `nvm` or `pyenv`). It captures environment variable changes from Bash and applies them in Fish.
-- (Optional) Homebrew on MacOS or Scoop/Chocolatey on Windows
+-   [Git](https://git-scm.com/)
+-   [curl](https://curl.se/)
+-   [fish](https://fishshell.com/) (will be installed if you use the `--full-install` option)
 
----
+## Installation
 
-## Setup Instructions
+This repository includes an `install.sh` script to automate the setup process.
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/LastElaphine/dotfiles.git ~/.dotfiles
+git clone https://github.com/your-username/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ```
 
----
+### 2. Run the installation script
 
-### 2. WezTerm Configuration
+The script provides two main options:
 
-1. Copy the platform-specific WezTerm configuration:
+-   `--full-install`: Installs all the tools (fish, starship, fisher, nvm.fish) and sets up the dotfiles.
+-   `--setup-dotfiles`: Only sets up the dotfiles, assuming you have the necessary tools installed.
 
-```bash
-# Linux / MacOS
-mkdir -p ~/.config/wezterm
-cp wezterm/wezterm.lua ~/.config/wezterm/
+Choose the option that best suits your needs.
 
-# Windows (native)
-mkdir -p $env:LOCALAPPDATA\wezterm
-cp wezterm/wezterm-win.lua $env:LOCALAPPDATA\wezterm\wezterm.lua
-```
+#### Full Installation
 
-2. Restart WezTerm to load the new configuration.
-
-> Both `wezterm` and `wezterm-win` folders exist to separate Linux/MacOS vs Windows configs.
-
----
-
-### 3. Fish Shell Configuration
-
-1. Install Fish 4:
-
-#### Linux (Ubuntu/Debian example)
+This option will install all the necessary tools and set up the dotfiles.
 
 ```bash
-sudo apt update
-sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:fish-shell/release-4
-sudo apt update
-sudo apt install -y fish
+./install.sh --full-install
 ```
 
-#### MacOS
+#### Setup Dotfiles Only
+
+If you already have `fish`, `starship`, `fisher`, and `nvm` installed, you can use this option to only set up the dotfiles.
 
 ```bash
-brew install fish
+./install.sh --setup-dotfiles
 ```
 
-#### Windows (WSL)
+### Help
 
-Install Fish in your WSL distro.
-
-#### Windows (native)
+To see the available options, use the `--help` flag.
 
 ```bash
-scoop install fish
-# or
-choco install fish
+./install.sh --help
 ```
 
-2. Set Fish as your default shell (optional):
+## Manual Installation
 
-```bash
-which fish | sudo tee -a /etc/shells
-chsh -s (which fish)
-```
+If you prefer to install the dotfiles manually, you can look at the `install.sh` script to see the steps involved. The script is well-commented and should be easy to follow.
 
-3. Copy the Fish configuration:
+## Customization
 
-```bash
-mkdir -p ~/.config/fish
-cp config.fish ~/.config/fish/
-```
+You can easily extend this configuration by:
 
-4. Restart your terminal to load the new configuration.
-
----
-
-### 4. Notes
-
-* The Fish config sets aliases, environment variables, and optionally starts `ssh-agent`.
-* WezTerm config is platform-specific; use the correct file for your OS.
-* For cross-platform setups, check `$os` in Fish or use conditional statements in `wezterm.lua`.
-
----
-
-### 5. Optional: Extend Your Setup
-
-You can add:
-
-* Custom functions and scripts in `~/.config/fish/functions/`
-* Additional WezTerm keybindings or colorschemes
-
----
-
-### 6. Install Bass
-
-```bash
-fisher install edc/bass
-```
-
----
-
-### 7. Install Starship
-
-[Starship](https://starship.rs/) is a minimal, blazing-fast, and infinitely customizable prompt for any shell!
-
-1. **Install Starship**
-
-```bash
-curl -sS https://starship.rs/install.sh | sh
-```
-
-2. **Configure Starship**
-
-To configure starship you need to create a `starship.toml` file in `~/.config/`.
-
-You can find more information about personalizing starship at the [official docs](https://starship.rs/config/)
-
----
-
-### 8. Install fastfetch
-
-[fastfetch](https://github.com/fastfetch-cli/fastfetch) is a neofetch-like tool for fetching system information and displaying them in a pretty way.
-
-#### Linux
-
-<details>
-<summary>Arch Linux</summary>
-
-```bash
-sudo pacman -S fastfetch
-```
-
-</details>
-
-<details>
-<summary>Fedora</summary>
-
-```bash
-sudo dnf install fastfetch
-```
-
-</details>
-
-<details>
-<summary>Ubuntu</summary>
-
-```bash
-sudo add-apt-repository ppa:fastfetch-cli/fastfetch
-sudo apt update
-sudo apt install fastfetch
-```
-
-</details>
-
-#### MacOS
-
-```bash
-brew install fastfetch
-```
-
-#### Windows
-
-```bash
-scoop install fastfetch
-# or
-choco install fastfetch
-```
+-   Adding new functions to the `fish/functions` directory.
+-   Modifying the `wezterm/wezterm.lua` file to change the terminal appearance and behavior.
+-   Customizing the `starship.toml` file to change your prompt.
