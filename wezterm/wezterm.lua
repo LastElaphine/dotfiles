@@ -18,7 +18,7 @@ config.default_cwd = wezterm.home_dir
 -- Setup initial geometery
 config.initial_cols = 120
 config.initial_rows = 28
-config.line_height = 1.2
+config.line_height = 1.0
 
 -- Font Configurations
 config.font = wezterm.font("MesloLGS Nerd Font Mono")

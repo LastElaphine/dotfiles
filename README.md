@@ -139,4 +139,55 @@ curl -sS https://starship.rs/install.sh | sh
 
 To configure starship you need to create a `starship.toml` file in `~/.config/`.
 
-You can find more information about personalizing starship at the [official docs](httpshttps://starship.rs/config/)
+You can find more information about personalizing starship at the [official docs](https://starship.rs/config/)
+
+---
+
+### 8. Install fastfetch
+
+[fastfetch](https://github.com/fastfetch-cli/fastfetch) is a neofetch-like tool for fetching system information and displaying them in a pretty way.
+
+#### Linux
+
+<details>
+<summary>Arch Linux</summary>
+
+```bash
+sudo pacman -S fastfetch
+```
+
+</details>
+
+<details>
+<summary>Fedora</summary>
+
+```bash
+sudo dnf install fastfetch
+```
+
+</details>
+
+<details>
+<summary>Ubuntu</summary>
+
+```bash
+sudo add-apt-repository ppa:fastfetch-cli/fastfetch
+sudo apt update
+sudo apt install fastfetch
+```
+
+</details>
+
+#### MacOS
+
+```bash
+brew install fastfetch
+```
+
+#### Windows
+
+```bash
+scoop install fastfetch
+# or
+choco install fastfetch
+```
