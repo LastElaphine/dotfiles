@@ -53,6 +53,8 @@ install_fonts() {
             FONT_DIR="$HOME/.local/share/fonts"
             mkdir -p "$FONT_DIR"
             cp -f "$FONT_SRC" "$FONT_DIR/"
+            echo "Installing fontconfig..."
+            sudo apt-get install -y fontconfig
             echo "Updating font cache..."
             fc-cache -fv
             ;;
