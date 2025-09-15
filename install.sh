@@ -11,6 +11,8 @@ detect_os() {
     if [[ "$(uname)" == "Linux" ]]; then
         if grep -q Microsoft /proc/version; then
             echo "WSL"
+        elif grep -q "Amazon Linux" /etc/os-release 2>/dev/null; then
+            echo "AmazonLinux"
         else
             echo "Linux"
         fi
@@ -59,6 +61,15 @@ install_fonts() {
             echo "Updating font cache..."
             fc-cache -fv
             ;;
+        "AmazonLinux")
+            FONT_DIR="$HOME/.local/share/fonts"
+            mkdir -p "$FONT_DIR"
+            cp -f "$FONT_SRC" "$FONT_DIR/"
+            echo "Installing fontconfig..."
+            sudo yum install -y fontconfig
+            echo "Updating font cache..."
+            fc-cache -fv
+            ;;
         "macOS")
             echo "Installing fonts for macOS via Homebrew..."
             install_brew_package "font-meslo-lg-nerd-font"
@@ -81,6 +92,9 @@ install_fish() {
                 sudo apt-get update
                 sudo apt-get install -y fish
                 ;; 
+            "AmazonLinux")
+                sudo yum install -y fish
+                ;;
             "macOS")
                 install_brew_package fish
                 ;; 
@@ -123,6 +137,10 @@ install_fastfetch() {
                 echo "https://github.com/fastfetch-cli/fastfetch/releases/latest"
                 echo "Look for a file like 'fastfetch-linux-${ARCH}.deb' or 'fastfetch-linux-${ARCH}.tar.gz'."
                 echo "After downloading, you can install the .deb package using: sudo dpkg -i <downloaded_file.deb>"
+                ;;
+            "AmazonLinux")
+                echo "Installing fastfetch for Amazon Linux..."
+                sudo yum install -y fastfetch
                 ;;
             "macOS")
                 install_brew_package "fastfetch"
