@@ -77,19 +77,30 @@ install_fastfetch() {
         echo "fastfetch is already installed."
     else
         echo "Installing fastfetch..."
-        case "$(detect_os)" in
-            "Linux")
-                sudo add-apt-repository ppa:fastfetch-cli/fastfetch
-                sudo apt update
-                sudo apt install -y fastfetch
-                ;; 
+        local OS_TYPE=$(detect_os)
+        local ARCH=$(uname -m)
+
+        case "$OS_TYPE" in
+            "Linux"|"WSL")
+                echo "For Debian/Ubuntu (20.04+ / 11+), it's recommended to download the .deb package manually."
+                echo "Please visit the latest fastfetch GitHub releases page to download the appropriate package for your architecture:"
+                echo "https://github.com/fastfetch-cli/fastfetch/releases/latest"
+                echo "Look for a file like 'fastfetch-linux-${ARCH}.deb' or 'fastfetch-linux-${ARCH}.tar.gz'."
+                echo "After downloading, you can install the .deb package using: sudo dpkg -i <downloaded_file.deb>"
+                ;;
             "macOS")
+                echo "For macOS, it's recommended to install fastfetch via Homebrew."
+                if ! command -v brew &> /dev/null; then
+                    echo "Homebrew not found. Installing Homebrew..."
+                    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+                fi
                 brew install fastfetch
-                ;; 
+                ;;
             *)
-                echo "Unsupported OS for fastfetch installation."
+                echo "Unsupported OS for fastfetch installation. Please refer to the fastfetch GitHub page for manual installation instructions:"
+                echo "https://github.com/fastfetch-cli/fastfetch"
                 exit 1
-                ;; 
+                ;;
         esac
     fi
 }
