@@ -93,6 +93,8 @@ install_fish() {
                 sudo apt-get install -y fish
                 ;; 
             "AmazonLinux")
+                echo "Adding fish 3 repository for CentOS 7..."
+                sudo wget -O /etc/yum.repos.d/shells:fish:release:3.repo https://download.opensuse.org/repositories/shells:fish:release:3/CentOS_7/shells:fish:release:3.repo
                 sudo yum install -y fish
                 ;;
             "macOS")
