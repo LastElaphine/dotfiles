@@ -43,6 +43,29 @@ install_brew_package() {
     brew install "$package_name"
 }
 
+install_fonts() {
+    echo "Installing fonts..."
+    local OS_TYPE=$(detect_os)
+    local FONT_SRC="$DOTFILES_DIR/fonts/MesloLGSNerdFontMono-Regular.ttf"
+
+    case "$OS_TYPE" in
+        "Linux"|"WSL")
+            FONT_DIR="$HOME/.local/share/fonts"
+            mkdir -p "$FONT_DIR"
+            cp -f "$FONT_SRC" "$FONT_DIR/"
+            echo "Updating font cache..."
+            fc-cache -fv
+            ;;
+        "macOS")
+            echo "Installing fonts for macOS via Homebrew..."
+            install_brew_package "font-meslo-lg-nerd-font"
+            ;;
+        *)
+            echo "Unsupported OS for font installation. Please install MesloLGS Nerd Font Mono manually."
+            ;;
+    esac
+}
+
 # --- Installation Functions ---
 install_fish() {
     if command -v fish &> /dev/null; then
@@ -221,6 +244,7 @@ fi
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --full-install)
+            install_fonts
             install_fish
             install_starship
             install_fastfetch
