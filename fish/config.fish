@@ -4,6 +4,6 @@ if type -q nvm
     nvm use latest > /dev/null 2>&1
 end
 
-if type -q fastfetch
+if status is-interactive && type -q fastfetch
     fastfetch
 end

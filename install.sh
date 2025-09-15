@@ -2,7 +2,7 @@
 set -e
 
 # --- Configuration ---
-DOTFILES_DIR="$HOME/dotfiles"
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WSL_HOME="$HOME"
 
 # --- Helper Functions ---
@@ -34,13 +34,14 @@ link_file() {
 }
 
 install_brew_package() {
-    local package_name=$1
     if ! command -v brew &> /dev/null; then
         echo "Homebrew not found. Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        # Add Homebrew to PATH for this session
+        eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
-    echo "Installing $package_name via Homebrew..."
-    brew install "$package_name"
+    echo "Installing $* via Homebrew..."
+    brew install "$@"
 }
 
 install_fonts() {
@@ -81,7 +82,7 @@ install_fish() {
                 sudo apt-get install -y fish
                 ;; 
             "macOS")
-                brew install fish
+                install_brew_package fish
                 ;; 
             *)
                 echo "Unsupported OS for fish installation."
@@ -180,7 +181,7 @@ install_wezterm() {
                 ;;
             "macOS")
                 echo "Installing Wezterm for macOS via Homebrew..."
-                install_brew_package "--cask wezterm"
+                install_brew_package --cask wezterm
                 ;;
             *)
                 echo "Unsupported OS for Wezterm installation. Please refer to the Wezterm GitHub page for manual installation instructions:"
@@ -219,10 +220,9 @@ setup_dotfiles() {
         cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
         echo "WezTerm config installed to $WEZTERM_DEST"
     else
+        WEZTERM_SRC="$DOTFILES_DIR/wezterm/wezterm.lua"
         WEZTERM_DEST="$HOME/.config/wezterm/wezterm.lua"
-        mkdir -p "$(dirname "$WEZTERM_DEST")"
-        cp -f "$DOTFILES_DIR/wezterm/wezterm.lua" "$WEZTERM_DEST"
-        echo "WezTerm config installed to $WEZTERM_DEST"
+        link_file "$WEZTERM_SRC" "$WEZTERM_DEST"
     fi
 
     echo "Dotfiles setup complete!"

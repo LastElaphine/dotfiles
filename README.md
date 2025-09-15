@@ -28,7 +28,12 @@ This repository includes an `install.sh` script to automate the setup process.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/dotfiles.git ~/.dotfiles
+# Using SSH (recommended)
+git clone git@github.com:LastElaphine/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+
+# Or using HTTPS
+git clone https://github.com/LastElaphine/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ```
 
