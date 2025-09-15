@@ -110,7 +110,8 @@ install_nvm() {
         echo "nvm is already installed."
     else
         echo "Installing nvm..."
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+        # Install nvm without sourcing it in the current shell
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash -s -- --no-use
     fi
 }
 
@@ -118,12 +119,14 @@ install_fisher_and_plugins() {
     echo "Installing fisher and plugins..."
     if ! fish -c "type fisher" &> /dev/null; then
         echo "Installing fisher..."
-        fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+        # Temporarily disable config.fish sourcing for this fish command
+        FISH_CONFIG=/dev/null fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
     else
         echo "fisher is already installed."
     fi
     echo "Installing nvm.fish..."
-    fish -c "fisher install jorgebucaran/nvm.fish"
+    # Temporarily disable config.fish sourcing for this fish command
+    FISH_CONFIG=/dev/null fish -c "fisher install jorgebucaran/nvm.fish"
 }
 
 # --- Setup Function ---
