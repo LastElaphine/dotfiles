@@ -107,12 +107,20 @@ install_fish() {
         esac
     fi
     # Set fish as the default shell
-    if [ -f /etc/shells ] && ! grep -q "$(which fish)" /etc/shells; then
+    FISH_PATH="$(command -v fish)"
+    if [ -f /etc/shells ] && ! grep -q "$FISH_PATH" /etc/shells; then
         echo "Adding fish to /etc/shells"
-        which fish | sudo tee -a /etc/shells
+        echo "$FISH_PATH" | sudo tee -a /etc/shells
     fi
     echo "Setting fish as the default shell"
-    chsh -s "$(which fish)"
+    if ! command -v chsh &> /dev/null; then
+        case "$(detect_os)" in
+            "AmazonLinux")
+                sudo yum install -y util-linux-user
+                ;;
+        esac
+    fi
+    chsh -s "$FISH_PATH"
 }
 
 install_starship() {
