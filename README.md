@@ -1,6 +1,6 @@
 # Dotfiles
 
-This repository contains my personal configuration files for a modern terminal environment, designed to work on Linux, MacOS, and Windows (via WSL). It aims to provide a consistent and visually appealing terminal experience across all platforms.
+This repository contains my personal configuration files for a modern terminal environment, designed to work on Linux and MacOS. It aims to provide a consistent and visually appealing terminal experience across both platforms.
 
 ## Features
 
@@ -10,8 +10,13 @@ This setup includes:
 -   **[Fish Shell](https://fishshell.com/):** A smart and user-friendly command-line shell.
 -   **[Starship](https://starship.rs/):** A minimal, blazing-fast, and infinitely customizable prompt for any shell.
 -   **[fastfetch](https://github.com/fastfetch-cli/fastfetch):** A neofetch-like tool for fetching system information and displaying them in a pretty way.
--   **[nvm.fish](https://github.com/jorgebucaran/nvm.fish):** A fish-friendly version of the Node Version Manager.
+-   **[mise](https://github.com/jdx/mise):** A fast and reliable version manager for multiple languages.
 -   **[Fisher](https://github.com/jorgebucaran/fisher):** A plugin manager for the fish shell.
+-   **[Neovim](https://neovim.io/):** A modern, highly extensible text editor.
+
+## Recommended Font
+
+For the best experience, it is recommended to install the **MesloLGS Nerd Font**. You can download it from the [Nerd Fonts website](https://www.nerdfonts.com/font-downloads).
 
 ## Prerequisites
 
@@ -19,7 +24,6 @@ Before you begin, ensure you have the following installed:
 
 -   [Git](https://git-scm.com/)
 -   [curl](https://curl.se/)
--   [fish](https://fishshell.com/) (will be installed if you use the `--full-install` option)
 
 ## Installation
 
@@ -41,7 +45,7 @@ cd ~/.dotfiles
 
 The script provides two main options:
 
--   `--full-install`: Installs all the tools (fish, starship, fisher, nvm.fish) and sets up the dotfiles.
+-   `--full-install`: Installs all the tools (fish, starship, fisher, mise, neovim) and sets up the dotfiles.
 -   `--setup-dotfiles`: Only sets up the dotfiles, assuming you have the necessary tools installed.
 
 Choose the option that best suits your needs.
@@ -56,7 +60,7 @@ This option will install all the necessary tools and set up the dotfiles.
 
 #### Setup Dotfiles Only
 
-If you already have `fish`, `starship`, `fisher`, and `nvm` installed, you can use this option to only set up the dotfiles.
+If you already have `fish`, `starship`, `fisher`, `mise`, and `neovim` installed, you can use this option to only set up the dotfiles.
 
 ```bash
 ./install.sh --setup-dotfiles
@@ -81,3 +85,5 @@ You can easily extend this configuration by:
 -   Adding new functions to the `fish/functions` directory.
 -   Modifying the `wezterm/wezterm.lua` file to change the terminal appearance and behavior.
 -   Customizing the `starship.toml` file to change your prompt.
+-   Updating the `mise/config.toml` file to manage your development tools and environments.
+-   Modifying the `nvim` directory to customize your Neovim configuration.
