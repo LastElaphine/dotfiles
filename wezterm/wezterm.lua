@@ -6,7 +6,7 @@ local config = wezterm.config_builder()
 config.window_decorations = 'RESIZE'
 
 -- Terminal backdrop settings
-config.window_background_opacity = 0.75
+config.window_background_opacity = 1
 config.macos_window_background_blur = 10
 
 -- Only set WSL domain on Windows/WSL
@@ -32,7 +32,7 @@ else
 end
 
 -- Set Color Scheme
-config.color_scheme = 'rose-pine'
+config.color_scheme = 'Catppuccin Mocha'
 
 -- Enable scroll bar
 config.enable_scroll_bar = true
