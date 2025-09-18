@@ -17,7 +17,7 @@ link_file() {
     ln -s "$src" "$dest"
 }
 
-install_brew_package() {
+install_homebrew() {
     if ! command -v brew &> /dev/null; then
         echo "Homebrew not found. Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -28,14 +28,17 @@ install_brew_package() {
             eval "$(/opt/homebrew/bin/brew shellenv)"
         fi
     fi
-    echo "Installing $* via Homebrew..."
-    brew install "$@"
 }
 
 # --- Installation Functions ---
 install_dependencies() {
     echo "Installing dependencies via Homebrew..."
-    install_brew_package "fish" "starship" "fastfetch" "mise" "wezterm" "neovim"
+    brew install "fish" "starship" "fastfetch" "mise" "neovim"
+    if [[ "$(uname)" == "Darwin" ]]; then
+        brew install --cask wezterm
+    else
+        echo "Please install WezTerm manually from https://wezterm.org/installation.html"
+    fi
 }
 
 set_default_shell() {
@@ -110,6 +113,7 @@ fi
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         --full-install)
+            install_homebrew
             install_dependencies
             set_default_shell
             install_fisher_and_plugins
