@@ -5,3 +5,5 @@ if status is-interactive && type -q fastfetch
 end
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+$HOME/.local/bin/mise activate fish | source
