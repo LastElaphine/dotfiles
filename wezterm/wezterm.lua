@@ -24,7 +24,7 @@ config.initial_rows = 28
 config.line_height = 1.0
 
 -- Font Configurations
-config.font = wezterm.font("MesloLGS Nerd Font Mono")
+config.font = wezterm.font("JetBrainsMono Nerd Font Mono")
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
     config.font_size = 10.0
 else

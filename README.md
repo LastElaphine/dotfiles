@@ -16,7 +16,7 @@ This setup includes:
 
 ## Recommended Font
 
-For the best experience, it is recommended to install the **MesloLGS Nerd Font**. You can download it from the [Nerd Fonts website](https://www.nerdfonts.com/font-downloads).
+For the best experience, it is recommended to install the **JetBrains Mono Nerd Font**. You can download it from the [Nerd Fonts website](https://www.nerdfonts.com/font-downloads).
 
 ## Prerequisites
 
