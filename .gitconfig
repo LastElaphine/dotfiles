@@ -1,29 +1,30 @@
 [color]
-        ui = auto
+	ui = auto
 [core]
-        pager = less -FMRiX
+	pager = less -FMRiX
+	editor = nvim
 [push]
-        default = simple
+	default = simple
 [alias]
-        st = status
-        co = checkout
-        br = branch
-        ci = commit
-        cp = cherry-pick
-        df = diff
-        lg = log --oneline --graph --decorate
-        dec = log --graph --all --oneline --decorate
-        dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
-        up = !git pull --rebase --prune $@ && git submodule update --init --recursive
-        default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
-        bclean = "!f() { DEFAULT=$(git default); git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; }; f"
-        bdone = "!f() { DEFAULT=$(git default); git checkout ${1-$DEFAULT} && git up && git bclean ${1-$DEFAULT} && git cleanshare origin/${1-mainline}; }; f"
-        cleanshare = "!f() { DEFAULT=$(git default); git branch --remotes --merged ${1-origin/mainline} | grep 'share/' | cut -f2- -d/ | xargs git push share --delete; }; f"
+	st = status
+	co = checkout
+	br = branch
+	ci = commit
+	cp = cherry-pick
+	df = diff
+	lg = log --oneline --graph --decorate
+	dec = log --graph --all --oneline --decorate
+	dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	default = !git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+	bclean = "!f() { DEFAULT=$(git default); git branch --merged ${1-$DEFAULT} | grep -v " ${1-$DEFAULT}$" | xargs git branch -d; }; f"
+	bdone = "!f() { DEFAULT=$(git default); git checkout ${1-$DEFAULT} && git up && git bclean ${1-$DEFAULT} && git cleanshare origin/${1-mainline}; }; f"
+	cleanshare = "!f() { DEFAULT=$(git default); git branch --remotes --merged ${1-origin/mainline} | grep 'share/' | cut -f2- -d/ | xargs git push share --delete; }; f"
 
 [filter "lfs"]
-        required = true
-        clean = git-lfs clean -- %f
-        smudge = git-lfs smudge -- %f
-        process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 [user]
 	name = Shailen Patel
