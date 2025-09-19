@@ -73,6 +73,11 @@ setup_dotfiles() {
     STARSHIP_DEST="$HOME/.config/starship.toml"
     link_file "$STARSHIP_SRC" "$STARSHIP_DEST"
 
+    # Fastfetch config
+    FASTFETCH_SRC="$DOTFILES_DIR/fastfetch/config.jsonc"
+    FASTFETCH_DEST="$WSL_HOME/.config/fastfetch/config.jsonc"
+    link_file "$FASTFETCH_SRC" "$FASTFETCH_DEST"
+
     # Fish functions
     FISH_FUNCTIONS_SRC="$DOTFILES_DIR/fish/functions"
     FISH_FUNCTIONS_DEST="$HOME/.config/fish/functions"
