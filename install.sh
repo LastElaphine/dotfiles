@@ -61,6 +61,20 @@ install_fisher_and_plugins() {
     fi
 }
 
+setup_git() {
+    echo "Setting up Git configuration..."
+    
+    # Backup existing gitconfig if it exists
+    if [ -f "$HOME/.gitconfig" ]; then
+        cp "$HOME/.gitconfig" "$HOME/.gitconfig.backup"
+        echo "Backed up existing .gitconfig to .gitconfig.backup"
+    fi
+    
+    # Symlink git config
+    ln -sf "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
+    echo "Git configuration linked successfully"
+}
+
 # --- Setup Function ---
 setup_dotfiles() {
     # Fish config
@@ -97,6 +111,9 @@ setup_dotfiles() {
     NVIM_SRC="$DOTFILES_DIR/nvim"
     NVIM_DEST="$HOME/.config/nvim"
     link_file "$NVIM_SRC" "$NVIM_DEST"
+
+    # Git config
+    setup_git
 
     echo "Dotfiles setup complete!"
 }
