@@ -9,7 +9,10 @@ link_file() {
     local src=$1
     local dest=$2
     mkdir -p "$(dirname "$dest")"
-    if [ -e "$dest" ] || [ -L "$dest" ]; then
+    if [ -L "$dest" ]; then
+        echo "Removing existing symlink: $dest"
+        rm "$dest"
+    elif [ -e "$dest" ]; then
         echo "Backing up existing file: $dest -> $dest.bak"
         mv "$dest" "$dest.bak"
     fi
@@ -61,20 +64,6 @@ install_fisher_and_plugins() {
     fi
 }
 
-setup_git() {
-    echo "Setting up Git configuration..."
-    
-    # Backup existing gitconfig if it exists
-    if [ -f "$HOME/.gitconfig" ]; then
-        cp "$HOME/.gitconfig" "$HOME/.gitconfig.backup"
-        echo "Backed up existing .gitconfig to .gitconfig.backup"
-    fi
-    
-    # Symlink git config
-    ln -sf "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
-    echo "Git configuration linked successfully"
-}
-
 # --- Setup Function ---
 setup_dotfiles() {
     # Fish config
@@ -89,7 +78,7 @@ setup_dotfiles() {
 
     # Fastfetch config
     FASTFETCH_SRC="$DOTFILES_DIR/fastfetch/config.jsonc"
-    FASTFETCH_DEST="$WSL_HOME/.config/fastfetch/config.jsonc"
+    FASTFETCH_DEST="$HOME/.config/fastfetch/config.jsonc"
     link_file "$FASTFETCH_SRC" "$FASTFETCH_DEST"
 
     # Fish functions
@@ -113,7 +102,9 @@ setup_dotfiles() {
     link_file "$NVIM_SRC" "$NVIM_DEST"
 
     # Git config
-    setup_git
+    GITCONFIG_SRC="$DOTFILES_DIR/.gitconfig"
+    GITCONFIG_DEST="$HOME/.gitconfig"
+    link_file "$GITCONFIG_SRC" "$GITCONFIG_DEST"
 
     echo "Dotfiles setup complete!"
 }
