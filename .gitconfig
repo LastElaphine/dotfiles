@@ -27,4 +27,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 [user]
-	name = Shailen Patel
+	name = LastElaphine
+	email = shailen.s.patel@gmail.com
