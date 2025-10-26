@@ -10,6 +10,8 @@ This setup includes:
 -   **[Starship](https://starship.rs/):** A minimal, blazing-fast, and infinitely customizable prompt for any shell.
 -   **[fastfetch](https://github.com/fastfetch-cli/fastfetch):** A neofetch-like tool for fetching system information and displaying them in a pretty way.
 -   **[Neovim](https://neovim.io/):** A modern, highly extensible text editor.
+-   **[Hyprland](https://wiki.hypr.land/)**: A highly customizable, dynamic tiling compositor for Wayland.
+-   **[Waybar](https://github.com/Alexays/Waybar)**: A highly customizable Wayland bar.
 
 ## Recommended Font
 
@@ -20,7 +22,6 @@ For the best experience, it is recommended to install the **JetBrains Mono Nerd 
 Before you begin, ensure you have the following installed:
 
 -   [Git](https://git-scm.com/)
--   [curl](https://curl.se/)
 -   [stow](https://www.gnu.org/software/stow/)
 
 ## Installation
