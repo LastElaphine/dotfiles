@@ -3,7 +3,7 @@
     width = (0, 1500)
     height = 950
     origin = top-right
-    offset = 48x60
+    offset = 5x5
     scale = 0
     notification_limit = 10
     progress_bar = true
@@ -12,7 +12,7 @@
     progress_bar_min_width = 150
     progress_bar_max_width = 300
     progress_bar_corner_radius = 0
-    icon_corner_radius = 0
+    icon_corner_radius = 10
     indicate_hidden = yes
     transparency = 5
     separator_height = 2
@@ -25,7 +25,7 @@
     separator_color = frame
     sort = yes
     idle_threshold = 120
-    font = UbuntuMono Nerd Font Mono 17
+    font = 0xProto Nerd Font Propo
     line_height = 10
     markup = full
     format = "<b><u>%s</u></b>\n%b\n"
