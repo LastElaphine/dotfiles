@@ -7,6 +7,7 @@ This repository contains my personal configuration files for a modern terminal e
 This setup includes:
 
 -   **[WezTerm](https://wezfurlong.org/wezterm/):** A GPU-accelerated cross-platform terminal emulator and multiplexer.
+-   **[Ghostty](https://ghostty.org/)**: Ghostty is a fast, feature-rich, and cross-platform terminal emulator that uses platform-native UI and GPU acceleration.
 -   **[Starship](https://starship.rs/):** A minimal, blazing-fast, and infinitely customizable prompt for any shell.
 -   **[fastfetch](https://github.com/fastfetch-cli/fastfetch):** A neofetch-like tool for fetching system information and displaying them in a pretty way.
 -   **[Neovim](https://neovim.io/):** A modern, highly extensible text editor.
