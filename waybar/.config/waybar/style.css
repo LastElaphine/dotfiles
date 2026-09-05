@@ -80,7 +80,7 @@
   font-size: 12pt;
   font-weight: 600;
   color: @text;
-  border-radius: 6pt;
+  /* border-radius: 6pt; */
   /* box-shadow: */
   /*   inset 0px 5px 4px -5px rgba(170, 190, 255, 0.5), */
   /*   inset 0px -5px 4px -5px rgba(170, 190, 255, 1); */
