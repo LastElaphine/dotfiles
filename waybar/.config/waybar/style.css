@@ -466,7 +466,7 @@
 /* Tooltip */
 /* {{{ */
 tooltip {
-  background: @background;
+  background: @background2;
   border: 3px solid @caution;
   border-radius: 8px;
   font-weight: 500;
@@ -474,9 +474,11 @@ tooltip {
 }
 
 #waybar.main #tray menu {
-  background: @background;
+  background: @background1;
   border: 3px solid @caution;
   border-radius: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 /* }}} */
