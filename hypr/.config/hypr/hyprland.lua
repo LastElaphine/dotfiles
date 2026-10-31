@@ -28,7 +28,7 @@ hl.monitor({ output = "DP-6", mode = "2560x1440@144", position = "auto-center-ri
 -- Set programs that you use
 local terminal = "ghostty"
 local fileManager = "dolphin"
-local menu = "wofi --show drun"
+local menu = "wofi --show drun --allow-images"
 
 -------------------
 ---- AUTOSTART ----
@@ -107,8 +107,8 @@ hl.config({
 	},
 
 	decoration = {
-		rounding = 20,
-		rounding_power = 0,
+		rounding = 0,
+		rounding_power = 2,
 
 		-- Change transparency of focused and unfocused windows
 		active_opacity = 1.0,
