@@ -50,6 +50,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd('gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"')
 	hl.exec_cmd("waybar & hyprsunset & hyprpaper")
 	hl.exec_cmd("dunst")
+	hl.exec_cmd("vicine server")
 end)
 
 -------------------------------
@@ -266,6 +267,7 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd("vicinae toggle"))
 
 -- Move focus with mainMod + arrow keys
 hl.bind(mainMod .. " + left", hl.dsp.focus({ direction = "left" }))
@@ -369,6 +371,13 @@ hl.window_rule({
 --     no_anim = true,
 -- })
 -- overlayLayerRule:set_enabled(false)
+
+hl.layer_rule({
+	match = { namespace = "vicinae" },
+	name = "vicinae-blur",
+	blur = true,
+	ignore_alpha = 0,
+})
 
 -- Hyprland-run windowrule
 hl.window_rule({
